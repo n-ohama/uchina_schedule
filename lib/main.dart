@@ -1,0 +1,101 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:uchina_schedule/list/list_page.dart';
+import 'login/login_page.dart';
+import 'package:timezone/data/latest.dart' as tz;
+
+void main() async {
+  tz.initializeTimeZones();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await SharedPreferences.getInstance();
+  tz.initializeTimeZones();
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Firebase Local_Notification',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  TimeOfDay selectTime;
+
+  @override
+  void initState() {
+    super.initState();
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    final iOS = IOSInitializationSettings();
+    final initSettings = InitializationSettings(iOS: iOS);
+    flutterLocalNotificationsPlugin.initialize(
+      initSettings,
+      onSelectNotification: onSelectNotification,
+    );
+  }
+
+  Future onSelectNotification(String payload) {
+    if (payload != null) {
+      print(payload);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        Provider<MainModel>(
+          create: (_) => MainModel(FirebaseAuth.instance),
+        ),
+        StreamProvider(
+          create: (context) => context.read<MainModel>().authStateChanges,
+        )
+      ],
+      child: AuthCheckWrapper(),
+    );
+  }
+}
+
+class AuthCheckWrapper extends StatelessWidget {
+  _setPrefItems(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('firebaseUid', value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User>();
+
+    if (firebaseUser != null) {
+      _setPrefItems(firebaseUser.uid);
+      return ListPage();
+    }
+    return LoginPage();
+  }
+}
+
+class MainModel {
+  final FirebaseAuth _firebaseAuth;
+  MainModel(this._firebaseAuth);
+
+  Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
+}
