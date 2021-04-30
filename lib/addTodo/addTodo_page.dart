@@ -23,7 +23,7 @@ class InsideAddTodo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AddTodoModel>(builder: (context, model, child) {
       return Scaffold(
-        appBar: AppBar(title: Text('New Schedule')),
+        appBar: AppBar(title: Text('予定を追加🍔')),
         body: Padding(
           padding: EdgeInsets.all(16),
           child: Column(
@@ -70,7 +70,7 @@ class InsideAddTodo extends StatelessWidget {
                 controller: _timeController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.date_range),
+                  prefixIcon: Icon(Icons.access_time),
                   suffixIcon: Icon(Icons.arrow_drop_down),
                   labelText: "Time",
                 ),

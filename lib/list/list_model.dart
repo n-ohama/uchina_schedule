@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ListModel extends ChangeNotifier {
   List<TodoList> todoList = [];
+  String updateTitle;
 
   Future<void> signOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -48,6 +49,18 @@ class ListModel extends ChangeNotifier {
     await deleteItem.delete();
     await FlutterLocalNotificationsPlugin().cancel(deleteNotificationId);
     print('done!');
+  }
+
+  Future<void> updateTodo(todoDocumentId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String myUid = prefs.getString('firebaseUid');
+    final updateTodo = FirebaseFirestore.instance
+        .collection('users')
+        .doc(myUid)
+        .collection('todos')
+        .doc(todoDocumentId);
+    await updateTodo.update({"title": updateTitle});
+    updateTitle = null;
   }
 }
 
