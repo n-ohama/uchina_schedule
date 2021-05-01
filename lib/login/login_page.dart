@@ -5,6 +5,11 @@ import 'package:uchina_schedule/login/login_model.dart';
 class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final List errorList = [
+    'パスワードが間違っています。',
+    'そのメールアドレスのユーザーは見つかりません。',
+    'メールアドレスの書き方が違います。'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +42,16 @@ class LoginPage extends StatelessWidget {
                       await model.login(
                           email: emailController.text.trim(),
                           password: passwordController.text.trim());
-                      _showDialog(context, 'ログイン');
+                      _showDialog(context, 'ログイン完了！');
                     } catch (e) {
-                      _showDialog(context, e.toString());
+                      String errorContent = '';
+                      if (e.code == 'wrong-password')
+                        errorContent = errorList[0];
+                      if (e.code == 'user-not-found')
+                        errorContent = errorList[1];
+                      if (e.code == 'invalid-email')
+                        errorContent = errorList[2];
+                      _showDialog(context, errorContent);
                     }
                   },
                   child: Text("Sign in"),

@@ -116,7 +116,7 @@ class InsideAddTodo extends StatelessWidget {
             Navigator.pop(context);
           },
           label: Text('追加する'),
-          icon: Icon(Icons.cloud),
+          icon: Icon(Icons.whatshot),
           backgroundColor: Colors.deepOrange,
         ),
       );

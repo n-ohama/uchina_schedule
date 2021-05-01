@@ -24,19 +24,40 @@ class ListPage extends StatelessWidget {
         //   },
         // ),
 
+        final List _items = [
+          'HELP',
+          'SIGNOUT',
+        ];
         return Scaffold(
           appBar: AppBar(
             title: Text('予定リスト🍜'),
-            actions: <Widget>[
+            actions: [
               PopupMenuButton(
-                child: Icon(Icons.more_vert),
-                itemBuilder: (context) => List.generate(
-                  5,
-                  (index) => PopupMenuItem(
-                    child: Text('button No $index'),
-                  ),
-                ),
-              )
+                itemBuilder: (BuildContext context) => _items
+                    .map(
+                      (item) => PopupMenuItem(
+                        child: Text(item),
+                        value: item,
+                      ),
+                    )
+                    .toList(),
+                onSelected: (item) {
+                  if (item == 'HELP')
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: Text('Help Me'),
+                        actions: [
+                          ElevatedButton(
+                            child: Text('OK'),
+                            onPressed: () => Navigator.of(context).pop(),
+                          )
+                        ],
+                      ),
+                    );
+                  if (item == 'SIGNOUT') model.signOut();
+                },
+              ),
             ],
           ),
           body: todoList.length == 0
@@ -61,7 +82,6 @@ class ListPage extends StatelessWidget {
                           icon: Icons.more_horiz,
                           onTap: () {
                             _updateController.text = '';
-                            print(_updateController.text);
                             showDialog(
                               context: context,
                               builder: (_) => AlertDialog(
@@ -128,35 +148,3 @@ class ListPage extends StatelessWidget {
     );
   }
 }
-
-// Column(
-//   children: todoList
-//       .map(
-//         (todo) => GestureDetector(
-//           onDoubleTap: () {
-//             model.deleteTodo(todo.documentReference.id);
-//           },
-//           child: Card(
-//             child: ListTile(
-//               selected: todo.alertDate
-//                   .toDate()
-//                   .isBefore(DateTime.now()),
-//               trailing: IconButton(
-//                 icon: Icon(Icons.more_vert),
-//                 onPressed: () => print(todo.title),
-//               ),
-//               leading: todo.isDone
-//                   ? Icon(
-//                       Icons.radio_button_checked,
-//                       color: Colors.blue,
-//                     )
-//                   : Icon(Icons.radio_button_off),
-//               title: Text(todo.title),
-//               subtitle: Text(
-//                   formattedDate(todo.alertDate.toDate())),
-//             ),
-//           ),
-//         ),
-//       )
-//       .toList(),
-// ),
