@@ -54,7 +54,6 @@ class ListModel extends ChangeNotifier {
     final int deleteNotificationId = deleteItemArray.data()['notificationId'];
     await deleteItem.delete();
     await FlutterLocalNotificationsPlugin().cancel(deleteNotificationId);
-    print('done!');
   }
 
   Future<void> updateTodo(todoDocumentId) async {

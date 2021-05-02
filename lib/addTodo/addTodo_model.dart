@@ -28,7 +28,6 @@ class AddTodoModel extends ChangeNotifier {
 
     tz.TZDateTime tzScheduledDate =
         tz.TZDateTime.from(scheduledDateTime, tz.getLocation('Asia/Tokyo'));
-    // print(tzScheduledDate);
 
     try {
       await FlutterLocalNotificationsPlugin().zonedSchedule(

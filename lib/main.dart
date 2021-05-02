@@ -46,7 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     final iOS = IOSInitializationSettings();
-    final initSettings = InitializationSettings(iOS: iOS);
+    final initAndroid = AndroidInitializationSettings('app_icon');
+    final initSettings = InitializationSettings(iOS: iOS, android: initAndroid);
     flutterLocalNotificationsPlugin.initialize(
       initSettings,
       onSelectNotification: onSelectNotification,
