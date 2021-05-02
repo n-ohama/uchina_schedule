@@ -76,9 +76,9 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class AuthCheckWrapper extends StatelessWidget {
-  _setPrefItems(String value) async {
+  _setPrefItems(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('firebaseUid', value);
+    prefs.setString(key, value);
   }
 
   @override
@@ -86,7 +86,8 @@ class AuthCheckWrapper extends StatelessWidget {
     final firebaseUser = context.watch<User>();
 
     if (firebaseUser != null) {
-      _setPrefItems(firebaseUser.uid);
+      _setPrefItems('firebaseUid', firebaseUser.uid);
+      _setPrefItems('firebaseEmail', firebaseUser.email);
       return ListPage();
     }
     return LoginPage();

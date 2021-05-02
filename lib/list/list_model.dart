@@ -7,6 +7,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ListModel extends ChangeNotifier {
   List<TodoList> todoList = [];
   String updateTitle;
+  String userEmail;
+
+  Future<void> getUserEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    this.userEmail = prefs.getString('firebaseEmail');
+  }
 
   Future<void> signOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
