@@ -14,56 +14,36 @@ class ListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ListModel>(
-      create: (_) => ListModel()..getTodoList(),
+      create: (_) => ListModel()
+        ..getTodoList()
+        ..getUserEmail(),
       child: Consumer<ListModel>(builder: (context, model, child) {
         final todoList = model.todoList;
-        // IconButton(
-        //   icon: Icon(Icons.logout),
-        //   onPressed: () {
-        //     model.signOut();
-        //   },
-        // ),
 
-        final List _items = [
-          'HELP',
-          'SIGNOUT',
-        ];
         return Scaffold(
           appBar: AppBar(
             title: Text('予定リスト🍜'),
-            actions: [
-              PopupMenuButton(
-                itemBuilder: (BuildContext context) => _items
-                    .map(
-                      (item) => PopupMenuItem(
-                        child: Text(item),
-                        value: item,
-                      ),
-                    )
-                    .toList(),
-                onSelected: (item) {
-                  if (item == 'HELP')
-                    showDialog(
-                      context: context,
-                      builder: (_) => AlertDialog(
-                        title: Text('Help Me'),
-                        actions: [
-                          ElevatedButton(
-                            child: Text('OK'),
-                            onPressed: () => Navigator.of(context).pop(),
-                          )
-                        ],
-                      ),
-                    );
-                  if (item == 'SIGNOUT') model.signOut();
-                },
+          ),
+          drawer: Container(
+            width: 160,
+            child: Drawer(
+              child: ListView(
+                children: [
+                  UserAccountsDrawerHeader(
+                    accountName: Text('Account'),
+                    accountEmail: Text(model.userEmail ?? 'メールアドレス'),
+                    currentAccountPicture: Icon(Icons.account_circle,
+                        size: 64, color: Colors.white),
+                  ),
+                  ListTile(title: Text('Logout'), onTap: () => model.signOut()),
+                ],
               ),
-            ],
+            ),
           ),
           body: todoList.length == 0
               ? Container(
                   alignment: Alignment.center,
-                  child: Text('No List'),
+                  child: Text('下の+ボタンから予定を追加'),
                 )
               : Container(
                   padding: EdgeInsets.only(top: 8),

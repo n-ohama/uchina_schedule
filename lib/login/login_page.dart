@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uchina_schedule/login/login_model.dart';
+import 'package:uchina_schedule/login/register_page.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -35,6 +36,23 @@ class LoginPage extends StatelessWidget {
                     labelText: "Password",
                   ),
                 ),
+                SizedBox(height: 16),
+                Container(
+                  width: double.infinity,
+                  child: InkWell(
+                    child: Text(
+                      'まだアカウントを持ってない？',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RegisterPage(),
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(height: 36.0),
                 ElevatedButton(
                   onPressed: () async {
@@ -54,7 +72,7 @@ class LoginPage extends StatelessWidget {
                       _showDialog(context, errorContent);
                     }
                   },
-                  child: Text("Sign in"),
+                  child: Text("ログイン"),
                 )
               ],
             ),
