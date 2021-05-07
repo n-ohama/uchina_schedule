@@ -23,6 +23,7 @@ dependencies:
   flutter_local_notifications: ^5.0.0+1
   timezone: ^0.7.0
   flutter_slidable: ^0.6.0
+  uuid: ^3.0.4
   
 
 dev_dependencies:

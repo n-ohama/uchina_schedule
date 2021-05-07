@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,18 +11,19 @@ class ListModel extends ChangeNotifier {
 
   Future<void> getUserEmail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    this.userEmail = prefs.getString('firebaseEmail');
+    this.userEmail = prefs.getString('firebaseEmail') ?? 'noEmail';
   }
 
-  Future<void> signOut() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('firebaseUid');
-    await FirebaseAuth.instance.signOut();
-  }
+  // Future<void> signOut() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   prefs.remove('firebaseUid');
+  //   await FirebaseAuth.instance.signOut();
+  // }
 
   Future<void> getTodoList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String myUid = prefs.getString('firebaseUid');
+    // final String myUid = prefs.getString('firebaseUid');
+    final String myUid = prefs.getString('uid');
 
     final snapshots = FirebaseFirestore.instance
         .collection('users')
