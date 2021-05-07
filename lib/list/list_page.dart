@@ -24,22 +24,22 @@ class ListPage extends StatelessWidget {
           appBar: AppBar(
             title: Text('予定リスト🍜'),
           ),
-          drawer: Container(
-            width: 160,
-            child: Drawer(
-              child: ListView(
-                children: [
-                  UserAccountsDrawerHeader(
-                    accountName: Text('Account'),
-                    accountEmail: Text(model.userEmail ?? 'メールアドレス'),
-                    currentAccountPicture: Icon(Icons.account_circle,
-                        size: 64, color: Colors.white),
-                  ),
-                  ListTile(title: Text('Logout'), onTap: () => model.signOut()),
-                ],
-              ),
-            ),
-          ),
+          // drawer: Container(
+          //   width: 160,
+          //   child: Drawer(
+          //     child: ListView(
+          //       children: [
+          //         UserAccountsDrawerHeader(
+          //           accountName: Text('Account'),
+          //           accountEmail: Text(model.userEmail ?? 'メールアドレス'),
+          //           currentAccountPicture: Icon(Icons.account_circle,
+          //               size: 64, color: Colors.white),
+          //         ),
+          //         ListTile(title: Text('Logout'), onTap: () {}),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           body: todoList.length == 0
               ? Container(
                   alignment: Alignment.center,

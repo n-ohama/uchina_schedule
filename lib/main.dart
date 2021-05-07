@@ -71,28 +71,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Future<void> printTest() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final uid = prefs.getString('uid') ?? 'noUid';
-    print(uid);
-  }
-
   @override
   Widget build(BuildContext context) {
     // return ListPage();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('hoge'),
-      ),
-      body: Center(
-        child: Container(
-          child: ElevatedButton(
-            child: Text('Check prefsUid'),
-            onPressed: () => printTest(),
-          ),
-        ),
-      ),
-    );
+    return ListPage();
     // return MultiProvider(
     //   providers: [
     //     Provider<MainModel>(
