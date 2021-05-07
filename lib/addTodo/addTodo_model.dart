@@ -13,7 +13,8 @@ class AddTodoModel extends ChangeNotifier {
   // firestoreに予定を追加する
   Future<void> notificationAndAddData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String myUid = prefs.getString('firebaseUid');
+    // final String myUid = prefs.getString('firebaseUid');
+    final String myUid = prefs.getString('uid');
 
     _uniqueNum = (prefs.getInt('uniqueNum') ?? 0) + 1;
     prefs.setInt('uniqueNum', _uniqueNum);

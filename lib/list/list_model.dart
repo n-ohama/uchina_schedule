@@ -11,7 +11,7 @@ class ListModel extends ChangeNotifier {
 
   Future<void> getUserEmail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    this.userEmail = prefs.getString('firebaseEmail') ?? 'noEmail';
+    this.userEmail = prefs.getString('email') ?? 'noEmail';
   }
 
   // Future<void> signOut() async {
@@ -40,7 +40,8 @@ class ListModel extends ChangeNotifier {
 
   Future<void> deleteTodo(String todoDocumentId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String myUid = prefs.getString('firebaseUid');
+    // final String myUid = prefs.getString('firebaseUid');
+    final String myUid = prefs.getString('uid');
     final selectedTodo =
         todoList.singleWhere((e) => e.documentReference.id == todoDocumentId);
     selectedTodo.isDone = true;
@@ -59,7 +60,8 @@ class ListModel extends ChangeNotifier {
 
   Future<void> updateTodo(todoDocumentId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String myUid = prefs.getString('firebaseUid');
+    // final String myUid = prefs.getString('firebaseUid');
+    final String myUid = prefs.getString('uid');
     final updateTodo = FirebaseFirestore.instance
         .collection('users')
         .doc(myUid)
