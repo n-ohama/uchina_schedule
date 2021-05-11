@@ -9,12 +9,12 @@ class AddTodoModel extends ChangeNotifier {
   TimeOfDay selectTime = TimeOfDay.now();
   String title;
   int _uniqueNum;
+  String myUid;
 
   // firestoreに予定を追加する
   Future<void> notificationAndAddData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // final String myUid = prefs.getString('firebaseUid');
-    final String myUid = prefs.getString('uid');
+    this.myUid = prefs.getString('uid');
 
     _uniqueNum = (prefs.getInt('uniqueNum') ?? 0) + 1;
     prefs.setInt('uniqueNum', _uniqueNum);
@@ -49,7 +49,7 @@ class AddTodoModel extends ChangeNotifier {
 
     final collection = FirebaseFirestore.instance
         .collection('users')
-        .doc(myUid)
+        .doc(this.myUid)
         .collection('todos');
 
     await collection

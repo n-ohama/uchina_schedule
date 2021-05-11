@@ -94,24 +94,24 @@ class InsideAddTodo extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
-            if (model.title == null) {
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  title: Text('予定の内容がないです。'),
-                  content: Text('予定の内容を記入してください'),
-                  actions: [
-                    ElevatedButton(
-                      child: Text("OK"),
-                      onPressed: () =>
-                          Navigator.of(context, rootNavigator: true)
-                              .pop('dialog'),
-                    ),
-                  ],
-                ),
-              );
-              return;
-            }
+            // if (model.title == null) {
+            //   showDialog(
+            //     context: context,
+            //     builder: (_) => AlertDialog(
+            //       title: Text('予定の内容がないです。'),
+            //       content: Text('予定の内容を記入してください'),
+            //       actions: [
+            //         ElevatedButton(
+            //           child: Text("OK"),
+            //           onPressed: () =>
+            //               Navigator.of(context, rootNavigator: true)
+            //                   .pop('dialog'),
+            //         ),
+            //       ],
+            //     ),
+            //   );
+            //   return;
+            // }
             await model.notificationAndAddData();
             Navigator.pop(context);
           },

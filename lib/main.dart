@@ -2,9 +2,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:uuid/uuid.dart';
 
 import 'package:uchina_schedule/list/list_page.dart';
 
@@ -51,17 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
       initSettings,
       onSelectNotification: onSelectNotification,
     );
-    initUid();
-  }
-
-  Future<void> initUid() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final uid = prefs.getString('uid') ?? 'noUid';
-    final uuidInstance = Uuid();
-    final String uuid = uuidInstance.v4();
-    if (uid == 'noUid') {
-      await prefs.setString('uid', uuid);
-    }
   }
 
   // ignore: missing_return
@@ -73,7 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // return ListPage();
     return ListPage();
     // return MultiProvider(
     //   providers: [

@@ -2,17 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ListModel extends ChangeNotifier {
   List<TodoList> todoList = [];
   String updateTitle;
-  String userEmail;
+  String myUid;
+  // String userEmail;
 
-  Future<void> getUserEmail() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    this.userEmail = prefs.getString('email') ?? 'noEmail';
-  }
+  // Future<void> getUserEmail() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   this.userEmail = prefs.getString('email') ?? 'noEmail';
+  // }
 
   // Future<void> signOut() async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -22,12 +24,18 @@ class ListModel extends ChangeNotifier {
 
   Future<void> getTodoList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // final String myUid = prefs.getString('firebaseUid');
-    final String myUid = prefs.getString('uid');
+    String formattedDate =
+        DateFormat('yyyy-MM-dd-HH-mm-ss').format(DateTime.now());
+    this.myUid = prefs.getString('uid') ?? 'noUid';
+    if (this.myUid == 'noUid') {
+      await prefs.setString('uid', formattedDate);
+      this.myUid = prefs.getString('uid');
+      print(this.myUid);
+    }
 
     final snapshots = FirebaseFirestore.instance
         .collection('users')
-        .doc(myUid)
+        .doc(this.myUid)
         .collection('todos')
         .orderBy('createdAt')
         .snapshots();
@@ -39,17 +47,13 @@ class ListModel extends ChangeNotifier {
   }
 
   Future<void> deleteTodo(String todoDocumentId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // final String myUid = prefs.getString('firebaseUid');
-    final String myUid = prefs.getString('uid');
     final selectedTodo =
         todoList.singleWhere((e) => e.documentReference.id == todoDocumentId);
     selectedTodo.isDone = true;
     notifyListeners();
-    // await Future.delayed(Duration(seconds: 2));
     final deleteItem = FirebaseFirestore.instance
         .collection('users')
-        .doc(myUid)
+        .doc(this.myUid)
         .collection('todos')
         .doc(todoDocumentId);
     final DocumentSnapshot deleteItemArray = await deleteItem.get();
@@ -59,12 +63,9 @@ class ListModel extends ChangeNotifier {
   }
 
   Future<void> updateTodo(todoDocumentId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // final String myUid = prefs.getString('firebaseUid');
-    final String myUid = prefs.getString('uid');
     final updateTodo = FirebaseFirestore.instance
         .collection('users')
-        .doc(myUid)
+        .doc(this.myUid)
         .collection('todos')
         .doc(todoDocumentId);
     await updateTodo.update({"title": updateTitle});
@@ -82,6 +83,5 @@ class TodoList {
   String title;
   bool isDone = false;
   Timestamp alertDate;
-  // bool notificationIsDone = false;
   DocumentReference documentReference;
 }

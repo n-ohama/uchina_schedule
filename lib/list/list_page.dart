@@ -14,9 +14,7 @@ class ListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ListModel>(
-      create: (_) => ListModel()
-        ..getTodoList()
-        ..getUserEmail(),
+      create: (_) => ListModel()..getTodoList(),
       child: Consumer<ListModel>(builder: (context, model, child) {
         final todoList = model.todoList;
 
@@ -114,7 +112,7 @@ class ListPage extends StatelessWidget {
                 ),
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
-            onPressed: () {
+            onPressed: () async {
               Navigator.push(
                 context,
                 MaterialPageRoute(
