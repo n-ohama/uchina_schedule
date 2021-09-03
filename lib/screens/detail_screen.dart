@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:uchina_schedule/model/todos.dart';
-import 'package:uchina_schedule/model/todo.dart';
+import 'package:uchina_schedule/freezed/todo.dart';
+import 'package:uchina_schedule/model/providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DetailScreen extends StatefulWidget {
   final Todo todo;
@@ -21,21 +21,9 @@ class _DetailScreenState extends State<DetailScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () async {
-            if (_titleController.text.trim().isEmpty) {
-              // 削除のダイアログ
-            } else {
-              final Todo newtodo = Todo(
-                id: todo.id,
-                title: _titleController.text,
-                createdAt: todo.createdAt,
-                notificationId: todo.notificationId,
-                scheduleDate: todo.scheduleDate,
-                isNotify: todo.isNotify,
-                isFavorite: todo.isFavorite,
-              );
-              if (_titleController.text != todo.title) {
-                Provider.of<Todos>(context, listen: false).updateItem(newtodo);
-              }
+            // if (_titleController.text.trim().isEmpty)
+            if (_titleController.text != todo.title) {
+              context.read(todoListProvider.notifier).updateItem(todo.id, _titleController.text);
             }
 
             Navigator.of(context).pop();
