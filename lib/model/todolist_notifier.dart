@@ -10,7 +10,7 @@ class TodolistNotifier extends StateNotifier<List<Todo>> {
   TodolistNotifier() : super([]);
 
   void addItem(Todo todo) {
-    state = [...state, todo];
+    state = [todo, ...state];
     _save();
   }
 
